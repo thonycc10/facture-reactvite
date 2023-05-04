@@ -1,8 +1,12 @@
 import {getInvoice} from "../services/getInvoice.js";
+import {InvoiceView} from "./InvoiceView.jsx";
+import {ClientView} from "./ClientView.jsx";
+import {CompanyView} from "./CompanyView.jsx";
+import {ListItemView} from "./ListItemView.jsx";
 
 export const InvoiceApp = () => {
 
-    const invoce = getInvoice();
+    const {id, name, client, company, item} = getInvoice();
 
     return (
         <>
@@ -12,32 +16,16 @@ export const InvoiceApp = () => {
                         Ejemplo de Factura:
                     </div>
                     <div className="card-body">
-                        <ul className={"list-group"}>
-                            <li className={"list-group-item"}>Id: {invoce.id}</li>
-                            <li className={"list-group-item"}>Name: {invoce.name}</li>
-                        </ul>
-
-                        <table className={'table table-striped table-hover'}>
-                            <thead>
-                            <tr>
-                                <th>Id</th>
-                                <th>Name</th>
-                                <th>Price</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {
-                                invoce.item.map(({amount, name, id, price}) => (
-                                    <tr key={id}>
-                                        <td>{id}</td>
-                                        <td>{name}</td>
-                                        <td>{amount}</td>
-                                        <td>{price}</td>
-                                    </tr>
-                                ))
-                            }
-                            </tbody>
-                        </table>
+                        <InvoiceView name={name} id={id}/>
+                        <div className="row my-3">
+                            <div className="col">
+                                <ClientView name={client.name} id={client.id}/>
+                            </div>
+                            <div className="col">
+                                <CompanyView name={company.name} id={company.id}/>
+                            </div>
+                        </div>
+                        <ListItemView item={item}/>
                     </div>
                 </div>
             </div>

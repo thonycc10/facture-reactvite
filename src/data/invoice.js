@@ -3,7 +3,11 @@ export const Invoice = {
     name: 'asdsa',
     client: {
         id: 1,
-        name: 'qwe'
+        name: 'cliente1'
+    },
+    company: {
+        id: 1,
+        name: 'company1'
     },
     item: [
         {
