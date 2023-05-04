@@ -1,9 +1,6 @@
 import * as PropTypes from "prop-types";
-import {Component} from "react";
 
-export class InvoiceView extends Component {
-    render() {
-        let {id, name} = this.props;
+export const InvoiceView = ({id, name}) => {
         return (
             <>
                 <ul className={"list-group"}>
@@ -12,7 +9,6 @@ export class InvoiceView extends Component {
                 </ul>
             </>
         )
-    }
 }
 
 InvoiceView.propTypes = {

@@ -1,9 +1,6 @@
 import * as PropTypes from "prop-types";
-import {Component} from "react";
 
-export class RowItemView extends Component {
-    render() {
-        let {id, name, amount, price} = this.props;
+export const RowItemView = ({id, name, amount, price}) => {
         return (
             <>
                 <tr>
@@ -14,7 +11,6 @@ export class RowItemView extends Component {
                 </tr>
             </>
         )
-    }
 }
 
 RowItemView.propTypes = {
