@@ -3,10 +3,11 @@ import {InvoiceView} from "./components/InvoiceView.jsx";
 import {ClientView} from "./components/ClientView.jsx";
 import {CompanyView} from "./components/CompanyView.jsx";
 import {ListItemView} from "./components/ListItemView.jsx";
+import {TotalView} from "./components/TotalView.jsx";
 
 export const InvoiceApp = () => {
 
-    const {id, name, client, company, item} = getInvoice();
+    const {id, name, client, company, item, total} = getInvoice();
 
     return (
         <>
@@ -26,6 +27,7 @@ export const InvoiceApp = () => {
                             </div>
                         </div>
                         <ListItemView item={item}/>
+                        <TotalView total={total}/>
                     </div>
                 </div>
             </div>
