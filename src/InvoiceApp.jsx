@@ -1,4 +1,4 @@
-import {getInvoice} from "./services/getInvoice.js";
+import {calculateTotal, getInvoice} from "./services/getInvoice.js";
 import {InvoiceView} from "./components/InvoiceView.jsx";
 import {ClientView} from "./components/ClientView.jsx";
 import {CompanyView} from "./components/CompanyView.jsx";
@@ -21,19 +21,13 @@ const invoiceInitial = {
 }
 
 export const InvoiceApp = () => {
+    const [total, setTotal] = useState(0);
+
+    const [counter, setCounter] = useState(4);
 
     const [invoice, setInvoice] = useState(invoiceInitial);
 
     const [items, setItems] = useState([]);
-
-    useEffect(() => {
-        const data = getInvoice();
-        console.log(data);
-        setInvoice(data);
-        setItems(data.item);
-    }, []) // condicion de cuando se debe ejecutar la sesion ciclo de vida.
-
-    const {id, name, client, company, total} = invoice;
 
     const [formInvoiceItemsState, setFormInvoiceItemsState] = useState({
         product: '',
@@ -43,7 +37,23 @@ export const InvoiceApp = () => {
 
     const {product, price, amount} = formInvoiceItemsState;
 
-    const [counter, setCounter] = useState(4);
+    const {id, name, client, company} = invoice;
+
+    useEffect(() => {
+        const data = getInvoice();
+        console.log(data);
+        setInvoice(data);
+        setItems(data.item);
+    }, []) // condicion de cuando se debe ejecutar la sesion ciclo de vida.
+
+    useEffect(() => {
+        console.log('El formulario tuvo un cambio');
+    }, [formInvoiceItemsState])
+
+    useEffect(() => {
+        console.log('El item tuvo un cambio');
+        setTotal(calculateTotal(items));
+    }, [items])
 
     const onChangeInput = ({target: {name, value}}) => {
         setFormInvoiceItemsState({
@@ -58,8 +68,8 @@ export const InvoiceApp = () => {
         if(product.trim().length <= 1 ||
             isNaN(amount.trim()) ||
             isNaN(price.trim()) ||
-            amount.trim().length <= 1 ||
-            price.trim().length <= 1) return;
+            amount.trim().length < 1 ||
+            price.trim().length < 1) return;
 
         setItems([...items, {
             id: counter,
