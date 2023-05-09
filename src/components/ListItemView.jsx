@@ -1,7 +1,7 @@
 import * as PropTypes from "prop-types";
 import {RowItemView} from "./RowItemView.jsx";
 
-export const ListItemView = ({item}) => {
+export const ListItemView = ({item, handlerDetleItem}) => {
     return (
         <>
             <h4>List items</h4>
@@ -11,12 +11,13 @@ export const ListItemView = ({item}) => {
                     <th>Name</th>
                     <th>Price</th>
                     <th>Amount</th>
+                    <th>Delete</th>
                 </tr>
                 </thead>
                 <tbody>
                 {
                     item.map(({amount, name, id, price}) => (
-                        <RowItemView key={id} name={name} id={id} amount={amount} price={price}/>
+                        <RowItemView key={id} name={name} id={id} amount={amount} price={price} handlerDetleItem={handlerDetleItem}/>
                     ))
                 }
                 </tbody>
@@ -25,4 +26,7 @@ export const ListItemView = ({item}) => {
     )
 }
 
-ListItemView.propTypes = {item: PropTypes.array}
+ListItemView.propTypes = {
+    item: PropTypes.array,
+    handlerDetleItem: PropTypes.any
+}
