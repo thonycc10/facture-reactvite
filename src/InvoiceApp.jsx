@@ -10,36 +10,43 @@ export const InvoiceApp = () => {
 
     const {id, name, client, company, item: itemsInitial, total} = getInvoice();
 
-    const [productValue, setProductValue] = useState('');
-    const [priceValue, setPriceValue] = useState('');
-    const [amoutValue, setAmountValue] = useState('');
+    const [formInvoiceItemsState, setFormInvoiceItemsState] = useState({
+        product: '',
+        price: '',
+        amount: ''
+    });
+
+    const {product, price, amount} = formInvoiceItemsState;
 
     const [items, setItems] = useState(itemsInitial);
 
     const [counter, setCounter] = useState(4);
 
-    const onChangeProduct = ({target}) => setProductValue(target.value);
-    const onChangePrice = ({target}) => setPriceValue(target.value);
-    const onChangeAmount = ({target}) => setAmountValue(target.value);
+    const onChangeInput = ({target: {name, value}}) => setFormInvoiceItemsState({
+        ...formInvoiceItemsState,
+        [ name ]: value
+    });
+
     const onChangeItemsSubmit = (event) => {
         event.preventDefault();
 
-        if(productValue.trim().length <= 1 ||
-            isNaN(amoutValue.trim()) ||
-            isNaN(priceValue.trim()) ||
-            amoutValue.trim().length <= 1 ||
-            priceValue.trim().length <= 1) return;
+        if(product.trim().length <= 1 ||
+            isNaN(amount.trim()) ||
+            isNaN(price.trim()) ||
+            amount.trim().length <= 1 ||
+            price.trim().length <= 1) return;
 
         setItems([...items, {
             id: counter,
-            name: productValue.trim(),
-            price: parseInt(priceValue.trim(), 10),
-            amount: parseInt(amoutValue.trim(), 10)
+            name: product.trim(),
+            price: parseInt(price.trim(), 10),
+            amount: parseInt(amount.trim(), 10)
         }])
-
-        setProductValue('');
-        setPriceValue('');
-        setAmountValue('');
+        setFormInvoiceItemsState({
+            product: '',
+            price: '',
+            amount: ''
+        })
         setCounter(counter + 1);
     };
 
@@ -63,22 +70,22 @@ export const InvoiceApp = () => {
                         <TotalView total={total}/>
                         <form action="" className={"w-50"} onSubmit={onChangeItemsSubmit}>
                             <input type="text"
-                                   name={"name"}
+                                   name={"product"}
                                    placeholder={"Prorduct"}
-                                   value={productValue}
-                                   onChange={onChangeProduct}
+                                   value={product}
+                                   onChange={onChangeInput}
                                    className={"form-control m-3"}/>
                             <input type="text"
                                    name={"price"}
                                    placeholder={"Price"}
-                                   value={priceValue}
-                                   onChange={onChangePrice}
+                                   value={price}
+                                   onChange={onChangeInput}
                                    className={"form-control m-3"}/>
                             <input type="text"
                                    name={"amount"}
                                    placeholder={"Amount"}
-                                   value={amoutValue}
-                                   onChange={onChangeAmount}
+                                   value={amount}
+                                   onChange={onChangeInput}
                                    className={"form-control m-3"}/>
                             <button type={"submit"} className={"btn btn-primary m-3"}>Nuevo Item</button>
                         </form>
