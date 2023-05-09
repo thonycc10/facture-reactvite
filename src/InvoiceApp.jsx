@@ -4,11 +4,36 @@ import {ClientView} from "./components/ClientView.jsx";
 import {CompanyView} from "./components/CompanyView.jsx";
 import {ListItemView} from "./components/ListItemView.jsx";
 import {TotalView} from "./components/TotalView.jsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+
+const invoiceInitial = {
+    id: 0,
+    name: '',
+    client: {
+        id: 0,
+        name: ''
+    },
+    company: {
+        id: 0,
+        name: ''
+    },
+    item: []
+}
 
 export const InvoiceApp = () => {
 
-    const {id, name, client, company, item: itemsInitial, total} = getInvoice();
+    const [invoice, setInvoice] = useState(invoiceInitial);
+
+    const [items, setItems] = useState([]);
+
+    useEffect(() => {
+        const data = getInvoice();
+        console.log(data);
+        setInvoice(data);
+        setItems(data.item);
+    }, []) // condicion de cuando se debe ejecutar la sesion ciclo de vida.
+
+    const {id, name, client, company, total} = invoice;
 
     const [formInvoiceItemsState, setFormInvoiceItemsState] = useState({
         product: '',
@@ -18,14 +43,14 @@ export const InvoiceApp = () => {
 
     const {product, price, amount} = formInvoiceItemsState;
 
-    const [items, setItems] = useState(itemsInitial);
-
     const [counter, setCounter] = useState(4);
 
-    const onChangeInput = ({target: {name, value}}) => setFormInvoiceItemsState({
-        ...formInvoiceItemsState,
-        [ name ]: value
-    });
+    const onChangeInput = ({target: {name, value}}) => {
+        setFormInvoiceItemsState({
+            ...formInvoiceItemsState,
+            [ name ]: value
+        });
+    }
 
     const onChangeItemsSubmit = (event) => {
         event.preventDefault();
