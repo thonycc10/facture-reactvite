@@ -4,7 +4,6 @@ export const RowItemView = ({id, name, amount, price}) => {
         return (
             <>
                 <tr>
-                    <td>{id}</td>
                     <td>{name}</td>
                     <td>{amount}</td>
                     <td>{price}</td>

@@ -8,9 +8,9 @@ export const ListItemView = ({item}) => {
             <table className={'table table-striped table-hover'}>
                 <thead>
                 <tr>
-                    <th>Id</th>
                     <th>Name</th>
                     <th>Price</th>
+                    <th>Amount</th>
                 </tr>
                 </thead>
                 <tbody>
