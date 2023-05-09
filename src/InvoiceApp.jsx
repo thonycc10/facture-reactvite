@@ -5,6 +5,7 @@ import {CompanyView} from "./components/CompanyView.jsx";
 import {ListItemView} from "./components/ListItemView.jsx";
 import {TotalView} from "./components/TotalView.jsx";
 import {useEffect, useState} from "react";
+import {FormItemsView} from "./components/FormItemsView.jsx";
 
 const invoiceInitial = {
     id: 0,
@@ -29,13 +30,8 @@ export const InvoiceApp = () => {
 
     const [items, setItems] = useState([]);
 
-    const [formInvoiceItemsState, setFormInvoiceItemsState] = useState({
-        product: '',
-        price: '',
-        amount: ''
-    });
 
-    const {product, price, amount} = formInvoiceItemsState;
+
 
     const {id, name, client, company} = invoice;
 
@@ -46,30 +42,14 @@ export const InvoiceApp = () => {
         setItems(data.item);
     }, []) // condicion de cuando se debe ejecutar la sesion ciclo de vida.
 
-    useEffect(() => {
-        console.log('El formulario tuvo un cambio');
-    }, [formInvoiceItemsState])
+
 
     useEffect(() => {
         console.log('El item tuvo un cambio');
         setTotal(calculateTotal(items));
     }, [items])
 
-    const onChangeInput = ({target: {name, value}}) => {
-        setFormInvoiceItemsState({
-            ...formInvoiceItemsState,
-            [ name ]: value
-        });
-    }
-
-    const onChangeItemsSubmit = (event) => {
-        event.preventDefault();
-
-        if(product.trim().length <= 1 ||
-            isNaN(amount.trim()) ||
-            isNaN(price.trim()) ||
-            amount.trim().length < 1 ||
-            price.trim().length < 1) return;
+    const handlerAddItems = ({product, price, amount}) => {
 
         setItems([...items, {
             id: counter,
@@ -77,11 +57,7 @@ export const InvoiceApp = () => {
             price: parseInt(price.trim(), 10),
             amount: parseInt(amount.trim(), 10)
         }])
-        setFormInvoiceItemsState({
-            product: '',
-            price: '',
-            amount: ''
-        })
+
         setCounter(counter + 1);
     };
 
@@ -103,27 +79,7 @@ export const InvoiceApp = () => {
                         </div>
                         <ListItemView item={items}/>
                         <TotalView total={total}/>
-                        <form action="" className={"w-50"} onSubmit={onChangeItemsSubmit}>
-                            <input type="text"
-                                   name={"product"}
-                                   placeholder={"Prorduct"}
-                                   value={product}
-                                   onChange={onChangeInput}
-                                   className={"form-control m-3"}/>
-                            <input type="text"
-                                   name={"price"}
-                                   placeholder={"Price"}
-                                   value={price}
-                                   onChange={onChangeInput}
-                                   className={"form-control m-3"}/>
-                            <input type="text"
-                                   name={"amount"}
-                                   placeholder={"Amount"}
-                                   value={amount}
-                                   onChange={onChangeInput}
-                                   className={"form-control m-3"}/>
-                            <button type={"submit"} className={"btn btn-primary m-3"}>Nuevo Item</button>
-                        </form>
+                        <FormItemsView handler={handlerAddItems} />
                     </div>
                 </div>
             </div>
